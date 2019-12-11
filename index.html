@@ -35,7 +35,7 @@
       startup();
 
       async function startup() {
-        const src = "https://pixijs.io/examples/examples/assets/video.mp4";
+        const src = "./assets/video.mp4";
 
         const videoSource = new PIXI.resources.VideoResource(src, {
           autoPlay: false,
@@ -48,56 +48,44 @@
 
         videoSprite.width = app.screen.width;
         videoSprite.height = app.screen.height;
+        videoSprite.scale.set(1.2);
 
-        texture.baseTexture.resource.source.muted = true;
+        video = texture.baseTexture.resource.source;
+
+        video.muted = true;
+        video.loop = true;
 
         app.stage.addChild(videoSprite);
         videoSource.source.play();
       }
 
       const basicStyle = new PIXI.TextStyle({
+        fontFamily: "Tiempos Headline Light",
         fontSize: 16,
-        fill: ["#ffffff"], // gradient
+        fill: ["#d1d1d1", "#1f1f1f", "#242424", "#d1d1d1"], // gradient
+        fillGradientStops: [0.1, 0.4, 0.6, 1],
+        fillGradientType: 1,
         wordWrap: true,
         wordWrapWidth: 440
       });
 
       const basicText = new PIXI.Text(
-        "I see darkness where there was light",
+        "An inmersive experience to find yourself",
         basicStyle
       );
-      basicText.x = 50;
-      basicText.y = 100;
+      basicText.x = app.screen.width / 2;
+      basicText.anchor.set(0.5);
+      basicText.scale.set(1.2);
+
+      basicText.y = app.screen.height / 2 + 110;
       basicText.cursor = "wait";
       basicText.interactive = true;
 
+      var blurFilter = new PIXI.filters.BlurFilter();
+      basicText.filters = [blurFilter];
+      blurFilter.blur = 0.85;
+
       app.stage.addChild(basicText);
-
-      const style = new PIXI.TextStyle({
-        fontFamily: "Arial",
-        fontSize: 36,
-        fontStyle: "italic",
-        fontWeight: "bold",
-        fill: ["#ffffff", "#00ff99"], // gradient
-        stroke: "#4a1850",
-        strokeThickness: 5,
-        dropShadow: true,
-        dropShadowColor: "#000000",
-        dropShadowBlur: 4,
-        dropShadowAngle: Math.PI / 6,
-        dropShadowDistance: 6,
-        wordWrap: true,
-        wordWrapWidth: 440
-      });
-
-      const richText = new PIXI.Text(
-        "Rich text with a lot of options and across multiple lines",
-        style
-      );
-      richText.x = 50;
-      richText.y = 250;
-
-      app.stage.addChild(richText);
     </script>
   </body>
 </html>

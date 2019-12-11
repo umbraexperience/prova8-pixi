@@ -1,0 +1,385 @@
+@font-face {
+  font-family: "Butler";
+  src: url("../assets/fonts/butler_bold-webfont.woff2") format("woff2"),
+    url("../assets/fonts/butler_bold-webfont.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Butler Ultra Light";
+  src: url("../assets/fonts/butler_ultra_light-webfont.woff2") format("woff2"),
+    url("../assets/fonts/butler_ultra_light-webfont.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+}
+@-webkit-keyframes lethe-in {
+  0% {
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7);
+    opacity: 0;
+    -webkit-filter: blur(10px);
+    filter: blur(10px);
+  }
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+    -webkit-filter: blur(0.7px);
+    filter: blur(0.7px);
+  }
+}
+@keyframes lethe-in {
+  0% {
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7);
+    opacity: 0;
+    -webkit-filter: blur(10px);
+    filter: blur(10px);
+  }
+  to {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+    -webkit-filter: blur(0.7px);
+    filter: blur(0.7px);
+  }
+}
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes noise-up {
+  0% {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 -600%;
+  }
+}
+@keyframes noise-up {
+  0% {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 -600%;
+  }
+}
+::-moz-selection {
+  background-color: transparent;
+}
+::selection {
+  background-color: transparent;
+}
+* {
+  cursor: url("../assets/img/dot2.png") 2.5 2.5, auto;
+  cursor: -webkit-image-set(
+        url("../assets/img/dot2.png") 1x,
+        url("../assets/img/dot.png") 2x
+      )
+      2.5 2.5,
+    auto;
+}
+body,
+html {
+  margin: 0;
+  overflow: hidden;
+  background-color: black;
+}
+.isotype {
+  background-image: url("../assets/img/isotype.png");
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+.isotype:after {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  content: "";
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: -1;
+}
+#noise-canvas {
+  display: none;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+#pixi {
+  -webkit-filter: url(#liquidDistort);
+  filter: url(#liquidDistort);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  max-width: 100%;
+  width: 100%;
+}
+.svg-filters {
+  display: none;
+}
+.experience {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+#visuals {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+#visuals .mobileLogo {
+  position: absolute;
+  top: 10vw;
+  left: 10vw;
+  width: 50%;
+  max-width: 150px;
+}
+@media (max-width: 1024px) and (orientation: landscape) {
+  #visuals .mobileLogo {
+    top: 10vh;
+  }
+}
+#visuals .onMobile,
+#visuals .percent {
+  -webkit-filter: blur(0.5px);
+  filter: blur(0.5px);
+  font-family: "Butler", serif;
+  font-size: 20px;
+  color: white;
+  font-weight: 700;
+}
+@media (max-width: 1024px) {
+  #visuals .onMobile,
+  #visuals .percent {
+    font-size: 7vw;
+    width: 80vw;
+    margin: auto;
+  }
+}
+@media (max-width: 1024px) and (orientation: landscape) {
+  #visuals .onMobile,
+  #visuals .percent {
+    font-size: 7vh;
+  }
+}
+.cursor {
+  position: absolute;
+  height: 8px;
+  width: 8px;
+  -webkit-filter: blur(4px);
+  filter: blur(4px);
+  opacity: 1;
+  -webkit-backface-visibility: hidden;
+  pointer-events: none;
+  will-change: transform;
+}
+.cursor .light {
+  display: none;
+  -webkit-box-shadow: 0 0 1px 1px white;
+  box-shadow: 0 0 1px 1px white;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  -webkit-transition: background-color 0.4s ease, -webkit-transform 0.4s ease;
+  transition: background-color 0.4s ease, -webkit-transform 0.4s ease;
+  -o-transition: background-color 0.4s ease, transform 0.4s ease;
+  transition: background-color 0.4s ease, transform 0.4s ease;
+  transition: background-color 0.4s ease, transform 0.4s ease,
+    -webkit-transform 0.4s ease;
+}
+.cursor.hover .light {
+  background-color: transparent;
+  -webkit-transform: scale(4);
+  -ms-transform: scale(4);
+  transform: scale(4);
+}
+#main-screen {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-perspective: 1000;
+  perspective: 1000;
+  -webkit-filter: url(#liquidDistort);
+  filter: url(#liquidDistort);
+  margin-top: 150px;
+  mix-blend-mode: lighten;
+  background-color: black;
+  width: 100%;
+  -webkit-transition: 2000ms cubic-bezier(0, 0, 0, 1);
+  -o-transition: 2000ms cubic-bezier(0, 0, 0, 1);
+  transition: 2000ms cubic-bezier(0, 0, 0, 1);
+  will-change: transform;
+  pointer-events: all;
+}
+#main-screen.texture:before {
+  content: "";
+  display: block;
+  position: absolute;
+  mix-blend-mode: multiply;
+  background-image: url("../assets/textures/perlin.jpg");
+  background-size: 100% 300%;
+  background-repeat: repeat;
+  width: 100%;
+  height: calc(100% - 4px);
+  opacity: 0.5;
+  z-index: 9999;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  will-change: auto;
+  -webkit-animation-name: noise-up;
+  animation-name: noise-up;
+  -webkit-animation-duration: 40s;
+  animation-duration: 40s;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  pointer-events: none;
+}
+#main-screen .tagline {
+  font-family: "Averia Serif Libre", serif;
+  font-size: 11px;
+  color: white;
+  font-weight: 300;
+  letter-spacing: 4px;
+  -webkit-animation: lethe-in 4.5s ease-out;
+  animation: lethe-in 4.5s ease-out;
+  text-align: center;
+  -webkit-filter: blur(0.6px);
+  filter: blur(0.6px);
+  margin-top: 20px;
+}
+.choice {
+  font-family: "Averia Serif Libre", serif;
+  font-size: 11px;
+  color: #4d4d4d;
+  font-weight: 700;
+  letter-spacing: 2px;
+  display: block;
+  margin: 30px auto 10px;
+  text-transform: uppercase;
+  padding: 8px 25px;
+  background: none;
+  border: 1px solid #4d4d4d;
+  -webkit-filter: blur(0.5px);
+  filter: blur(0.5px);
+  cursor: none;
+  -webkit-transition: 0.5s ease-out;
+  -o-transition: 0.5s ease-out;
+  transition: 0.5s ease-out;
+  -webkit-animation: fade-in 4.5s ease-out;
+  animation: fade-in 4.5s ease-out;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  opacity: 0;
+  -webkit-animation-delay: 5s;
+  animation-delay: 5s;
+}
+.choice:hover {
+  color: white;
+  border: 1px solid white;
+}
+.choice:focus {
+  outline: none;
+}
+.decisions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 70%;
+}
+.story-wrapper {
+  background-color: #161616;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.story-wrapper .story {
+  width: 90%;
+  max-width: 750px;
+  font-family: "Averia Serif Libre", serif;
+  font-size: 14px;
+  color: #fff;
+  font-weight: 400;
+  line-height: 150%;
+}
+.story-wrapper .story .options {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin-top: 50px;
+  width: 50%;
+}
+@media (max-width: 1024px) {
+  .story-wrapper .story .options {
+    width: 100%;
+  }
+}
+.story-wrapper .story .options a {
+  text-decoration: underline;
+  font-weight: 700;
+  font-style: italic;
+  opacity: 0.5;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+}
+.story-wrapper .story .options a:hover {
+  opacity: 1;
+}
